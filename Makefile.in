@@ -57,6 +57,8 @@ EXE=
 SRCDIR=.
 INCLUDES=-I$(SRCDIR)
 
+BUILDDIR=.
+
 ARCHDIR=arch/generic
 ARCH_STATIC_OBJS=
 ARCH_SHARED_OBJS=
@@ -275,8 +277,23 @@ zlibrc.o: win32/zlib$(SUFFIX)1.rc
 %.lo: $(SRCDIR)/%.c
 	$(CC) $(SFLAGS) -DPIC $(INCLUDES) -c -o $@ $<
 
-$(OBJG): %.o: $(SRCDIR)/%.c
+gzlib.o: $(SRCDIR)/gzlib.c
 	$(CC) $(CFLAGS) -DWITH_GZFILEOP $(INCLUDES) -c -o $@ $<
+
+gzlib.lo: $(SRCDIR)/gzlib.c
+	$(CC) $(SFLAGS) -DPIC -DWITH_GZFILEOP $(INCLUDES) -c -o $@ $<
+
+gzread.o: gzread.c
+	$(CC) $(CFLAGS) -DWITH_GZFILEOP $(INCLUDES) -c -o $@ $<
+
+gzread.lo: gzread.c
+	$(CC) $(SFLAGS) -DPIC -DWITH_GZFILEOP $(INCLUDES) -c -o $@ $<
+
+gzwrite.o: $(SRCDIR)/gzwrite.c
+	$(CC) $(CFLAGS) -DWITH_GZFILEOP $(INCLUDES) -c -o $@ $<
+
+gzwrite.lo: $(SRCDIR)/gzwrite.c
+	$(CC) $(SFLAGS) -DPIC -DWITH_GZFILEOP $(INCLUDES) -c -o $@ $<
 
 $(SHAREDTARGET): $(PIC_OBJS) $(DEFFILE) $(RCOBJS)
 ifneq ($(SHAREDTARGET),)
